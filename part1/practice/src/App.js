@@ -1,42 +1,95 @@
 import { useState } from 'react'
 
-const Display = ({counter}) => <div>{counter}</div>
+const History = (props) => {
+  if (props.allClicks.length === 0){
+    return (
+      <div>
+        the app is used by pressing the buttons
+      </div>
+    )
+  }
+  return (
+    <div>
+      button press history: {props.allClicks.join(' ')}
+    </div>
+  )
+}
 
 const Button = ({handleClick, text}) => (
-    <button onClick={handleClick}>
-      {text}
-    </button>
-  )
+  <button onClick={handleClick}>
+    {text}
+  </button>
+)
 
 
 const App = () => {
-  const [ counter, setCounter ] = useState(0)
-  
-  const increaseByOne = () => setCounter(counter + 1)
-  const decreceByOne = () => setCounter(counter - 1)
-  const setToZero = () => setCounter(0)
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+  const [allClicks, setAllClicks] = useState([])
 
-  return (
+  const handleLeftClick = () => {
+    setAllClicks(allClicks.concat('L'))
+    setLeft(left + 1)
+  }
+
+  const handleRightClick = () => {
+    setAllClicks(allClicks.concat('R'))
+    setRight(right + 1)
+  }
+
+  return(
     <div>
-      <Display counter={counter}/>
-      <Button 
-        handleClick={increaseByOne}
-        text='plus'
-      />
-      <Button 
-        handleClick={decreceByOne}
-        text='minus'
-      />
-      <Button 
-        handleClick={setToZero}
-        text='zero'
-      />
+      <div>
+        {left}
+        <Button handleClick={handleLeftClick} text='left' />
+        <Button handleClick={handleRightClick} text='right' />
+        {right}
+        <History allClicks={allClicks} />
+      </div>
     </div>
   )
 }
 
 
+//------------------------------------ 1.c ----------------------------------//
 
+// const Display = ({counter}) => <div>{counter}</div>
+
+// const Button = ({handleClick, text}) => (
+//     <button onClick={handleClick}>
+//       {text}
+//     </button>
+//   )
+
+
+// const App = () => {
+//   const [ counter, setCounter ] = useState(0)
+  
+//   const increaseByOne = () => setCounter(counter + 1)
+//   const decreceByOne = () => setCounter(counter - 1)
+//   const setToZero = () => setCounter(0)
+
+//   return (
+//     <div>
+//       <Display counter={counter}/>
+//       <Button 
+//         handleClick={increaseByOne}
+//         text='plus'
+//       />
+//       <Button 
+//         handleClick={decreceByOne}
+//         text='minus'
+//       />
+//       <Button 
+//         handleClick={setToZero}
+//         text='zero'
+//       />
+//     </div>
+//   )
+// }
+
+
+//------------------------------------ 1.ab ----------------------------------//
 
 // const Hello = ({name, age}) => {
 
