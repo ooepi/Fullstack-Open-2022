@@ -19,15 +19,3 @@ note over selain:
 selain suorittaa tapahtumankäsittelijän
 joka renderöi muistiinpanot näytölle
 end note
-
-
-selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
-
-note over palvelin:
-Palvelin tallentaa kirjoitetun
-viestin data.json tiedostoon
-ja päivittää listan lataamatta
-sivua uudelleen
-end note
-
-palvelin-->selain: {message: "note created"}
