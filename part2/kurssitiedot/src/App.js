@@ -1,76 +1,54 @@
-const Header = (props) => {
-  return (
-    <h1>{props.course}</h1>
-  )
-}
-
-const Part = (props) => {
-  return (
-    <p>{props.part} {props.excercises}</p>
-  )
-}
-
-const Content = ({parts}) => {
-  return (
-    <div>
-      {parts.map(part => 
-        <Part key={part.id} part={part.name} excercises={part.excercises}/>
-      )}
-    </div>
-  )
-}
-
-const Total = (props) => {
-  return (
-    <p>Number of excercises {props.parts[0].excercises + props.parts[1].excercises + props.parts[2].excercises}</p>
-  )
-}
-
-const Course = ({course}) => {
-  return (
-    <div>
-      <Header course={course.name}/>
-      <Content parts={course.parts} />
-    </div>
-  )
-}
-
+import Course from "./components/Course"
 
 const App = () => {
-  const course = {
+  const courses = [
+    {
     name: 'Half Stack application development',
+    id: 1,
     parts: [
       {
         name: 'Fundamentals of React',
-        excercises: 10,
+        exercises: 10,
         id: 1
       },
       { 
         name: 'Using props to pass data',
-        excercises: 7,
+        exercises: 7,
         id: 2
       },
       {
         name: 'State of a component',
-        excercises: 14,
+        exercises: 14,
         id: 3
       }
     ]
+  }, 
+  {
+    name: 'Node.js',
+    id: 2,
+    parts: [
+      {
+        name: 'Routing',
+        exercises: 3,
+        id: 1
+      },
+      {
+        name: 'Middlewares',
+        exercises: 7,
+        id: 2
+      }
+    ]
   }
+]
 
   return (
     <div>
-      <Course course={course} />
+      <h1>Web development curriculum</h1>
+      {courses.map(course => 
+        <Course key={course.id} course={course} />
+      )}
     </div>
   )
-
-  // return (
-  //   <div>
-  //     <Header course={course.name} />
-  //     <Content parts={course.parts}/>
-  //     <Total parts={course.parts}/>
-  //   </div>
-  // )
 }
 
 export default App
