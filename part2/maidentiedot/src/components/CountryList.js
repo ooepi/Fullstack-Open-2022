@@ -1,4 +1,5 @@
-import Country from "./Country"
+import Country from './Country'
+import CountryDetails from './CountryDetails'
 
 const CountryList = ({listOfCountries, setFilter}) => {
     if (listOfCountries.length > 10) {
@@ -12,20 +13,8 @@ const CountryList = ({listOfCountries, setFilter}) => {
       </ul>
       )
     } else if (listOfCountries.length === 1) {
-      const country = listOfCountries[0]
       return(
-        <div>
-          <h1>{country.name.common}</h1>
-          <p>Capital {country.capital}</p>
-          <p>Area {country.area}</p>
-          <b>Languages:</b>
-          <ul>
-            {Object.keys(country.languages).map(key =>
-              <li key={key}>{country.languages[key]}</li>
-            )}
-          </ul>
-          <img src={country.flags.png} alt="" />
-        </div>
+        <CountryDetails country={listOfCountries[0]}/>
       )
     }
   }
