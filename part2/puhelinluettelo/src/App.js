@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react'
 import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import personService from './services/persons'
 import axios from 'axios'
 
 const App = () => {
@@ -40,10 +41,14 @@ const App = () => {
       id: persons.length + 1
     }
 
-    setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewNumber('')
-  }
+    personService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
+    }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
