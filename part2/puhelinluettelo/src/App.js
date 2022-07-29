@@ -3,13 +3,15 @@ import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import personService from './services/persons'
-import axios from 'axios'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState()
+  const [messageType, setMessageType] = useState()
 
   useEffect(() => {
     personService
@@ -42,17 +44,33 @@ const App = () => {
             .then(initialPersons => {
               setPersons(initialPersons)
             })
-          }, 100);  
+          }, 200)
       }
+
+      setMessageType('info')
+      setMessage(`Changed number of ${newName} to ${newNumber}`)
+      
       setNewName('')
       setNewNumber('')
+  
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+
       return
 
     } else if (persons.some(person=> person.name === newName && person.number === newNumber)){
-      alert(`${newName} already has the number ${newNumber}`)
 
+      setMessageType('error')
+      setMessage(`${newName} already has the number ${newNumber}`)
+      
       setNewName('')
       setNewNumber('')
+  
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+
       return
     }
 
@@ -60,10 +78,19 @@ const App = () => {
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
       })
-    }
+
+    setMessageType('info')
+    setMessage(`Added ${newName}`)
+    
+    setNewName('')
+    setNewNumber('')
+
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+
+  }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -77,13 +104,22 @@ const App = () => {
     setFilter(event.target.value)
   }
 
-  const handleDelete = (id) => {
-    if (window.confirm(`Delete ${id}?`)) {
+  const handleDelete = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
       personService
-      .remove(id)
-      .then(returnedPerson => {
-        persons.map(person => person.id !== id ? person : returnedPerson)
-      })
+        .remove(id)
+        .then(returnedPerson => {
+          persons.map(person => person.id !== id ? person : returnedPerson)
+          setMessageType('info')
+          setMessage(`Information of ${name} has been removed`)
+        })
+        .catch(error => {
+          setMessageType('error')
+          setMessage(`Information of ${name} has already been removed from the server`)
+        })
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       setPersons(persons.filter(person => person.id !== id))
     }
   }
@@ -94,6 +130,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
+      <Notification message={message} type={messageType}/>
       <Filter filter={filter} handleFilterChange={handleFilterChange}/>
 
       <h2>Add a new</h2>
